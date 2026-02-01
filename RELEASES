@@ -1,0 +1,69 @@
+Auto-DNS v1.0.0 - Initial Release
+
+Release Date: February 1, 2026
+
+Overview:
+Auto-DNS is a Windows batch script that automatically tests DNS resolution speed for popular DNS providers and configures your network adapter to use the fastest one. This initial release brings automatic DNS optimization to help improve your internet browsing speed.
+
+Features:
+• Tests DNS resolution speed for popular DNS providers (Google, Cloudflare, Quad9) and your current ISP DNS
+• Measures response times using PowerShell's Resolve-DnsName with -QuickTimeout and Measure-Command
+• Uses multi-domain testing (5 domains) with multiple attempts per domain for more accurate results
+• Identifies the fastest DNS server based on average response time and success rate
+• Updates your Wi-Fi or Ethernet adapter DNS settings using PowerShell with netsh fallback
+• Includes comprehensive error handling and user feedback
+• Creates a backup of your original DNS settings
+• Flushes DNS cache after changes to ensure immediate effect
+• Verifies changes with multiple attempts to confirm successful update
+
+Supported DNS Providers:
+• Google DNS: 8.8.8.8, 8.8.4.4
+• Cloudflare DNS: 1.1.1.1, 1.0.0.1
+• Quad9 DNS: 9.9.9.9, 149.112.112.112
+• Your ISP's DNS: Automatically detected and included in tests
+
+Prerequisites:
+• Windows 8 or later (PowerShell 4.0+ required)
+• Administrative privileges (script must be run as Administrator)
+
+How to Use:
+1. Download the dns_optimizer.bat file
+2. Right-click on the file and select "Run as administrator"
+3. The script will automatically detect your active network adapter
+4. It will test DNS resolution speed for all configured DNS servers across multiple domains
+5. After identifying the fastest DNS server, it will ask for confirmation before updating your settings
+6. If confirmed, it will update your DNS settings, flush the DNS cache, and verify the change
+7. A connectivity test will be performed to ensure everything is working properly
+
+Technical Implementation:
+The script uses a combination of batch commands and PowerShell to achieve its functionality:
+1. Adapter Detection: Uses PowerShell's Get-NetAdapter to find active network adapters
+2. DNS Testing: Uses PowerShell's Resolve-DnsName with Measure-Command to measure response times
+3. DNS Update: Uses PowerShell's Set-DnsClientServerAddress with netsh fallback
+4. Verification: Checks that DNS settings were updated successfully
+
+Troubleshooting:
+Common Issues:
+• Script won't run: Make sure you're running as Administrator
+• No adapters detected: Ensure you have an active network connection
+• DNS update failed: Check that your network adapter supports DNS updates
+• High response times: Network conditions or temporary server issues may affect results
+
+Restoring Original DNS Settings:
+If you need to restore your original DNS settings, you can:
+1. Look for the backup file at %TEMP%\dns_backup.txt
+2. Manually configure your DNS settings through Windows Network Settings
+3. Use the Windows command: netsh interface ip set dns "Your Adapter Name" dhcp
+4. Restart your computer to ensure all changes take effect
+
+Known Issues:
+• May not work with all VPN connections
+• Some corporate networks may restrict DNS changes
+• Requires administrative privileges to modify network settings
+
+Changelog:
+• Initial release with all core functionality implemented
+• Includes comprehensive error handling
+• Added support for multiple DNS providers
+• Implemented automatic adapter detection
+• Added DNS settings backup and restoration
