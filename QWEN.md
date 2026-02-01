@@ -1,6 +1,10 @@
-# DNS Optimizer
+# Auto-DNS Project Documentation
 
-A Windows batch script that automatically tests DNS resolution speed for popular DNS providers and configures your network adapter to use the fastest one.
+## Project Overview
+
+Auto-DNS is a Windows batch script project that automatically tests DNS resolution speed for popular DNS providers and configures your network adapter to use the fastest one. The project consists of a main batch file (`dns_optimizer.bat`) and documentation (`README.md`).
+
+The script addresses the common need to optimize internet browsing speed by selecting the fastest DNS server available to the user. It tests multiple DNS providers including Google, Cloudflare, Quad9, and the user's current ISP DNS to determine which provides the best response times.
 
 ## Features
 
@@ -37,28 +41,34 @@ The script tests the following DNS providers:
 6. If confirmed, it will update your DNS settings, flush the DNS cache, and verify the change
 7. A connectivity test will be performed to ensure everything is working properly
 
-## What the Script Does
+## Technical Implementation
 
-1. **Detects Network Adapter**: Finds your active Wi-Fi or Ethernet adapter
-2. **Tests DNS Speed**: Uses PowerShell to measure response times for each DNS server across multiple domains (www.google.com, www.microsoft.com, www.github.com, www.stackoverflow.com, www.cloudflare.com)
-3. **Multi-Attempt Testing**: Performs 3 attempts per domain to get more accurate average response times
-4. **Calculates Averages**: Computes average response time and success rate for each DNS server
-5. **Identifies Fastest Server**: Compares average response times and success rates to select the optimal DNS server
-6. **Backs Up Current Settings**: Saves your current DNS configuration before making changes
-7. **Updates DNS Settings**: Configures your network adapter to use the fastest DNS server (with fallback methods)
-8. **Flushes DNS Cache**: Clears the DNS cache to ensure changes take effect immediately
-9. **Verifies Changes**: Confirms that the DNS settings were updated successfully with multiple verification attempts
-10. **Performs Connectivity Test**: Tests internet connectivity after changes
+The script uses a combination of batch commands and PowerShell to achieve its functionality:
 
-## Safety Features
+1. **Adapter Detection**: Uses PowerShell's `Get-NetAdapter` to find active network adapters
+2. **DNS Testing**: Uses PowerShell's `Resolve-DnsName` with `Measure-Command` to measure response times
+3. **DNS Update**: Uses PowerShell's `Set-DnsClientServerAddress` with netsh fallback
+4. **Verification**: Checks that DNS settings were updated successfully
 
-- Requires administrative privileges to prevent unauthorized changes
-- Asks for confirmation before updating DNS settings
-- Creates a backup of your original DNS settings
-- Attempts to restore original settings if the update fails
-- Uses multiple verification attempts to ensure changes are applied
-- Includes fallback methods if primary DNS update method fails
-- Ignores erroneous high response times that might be caused by timeouts
+The script handles complex PowerShell commands by creating temporary PowerShell script files, executing them, and reading the results from temporary text files to avoid escaping issues.
+
+## Building and Running
+
+The project is a standalone batch file that doesn't require compilation. Simply run the `dns_optimizer.bat` file as Administrator.
+
+## Development Conventions
+
+- The script uses delayed variable expansion (`EnableDelayedExpansion`) for proper variable handling in loops
+- PowerShell commands are executed through temporary script files to avoid escaping issues
+- Comprehensive error handling is implemented throughout the script
+- The script creates backups of original DNS settings before making changes
+- Multiple verification attempts are made to ensure changes take effect
+
+## Files
+
+- `dns_optimizer.bat`: The main DNS optimizer script
+- `README.md`: Documentation for the project
+- `dns_debug.bat`: Debug version of the script for troubleshooting adapter detection issues
 
 ## Troubleshooting
 
@@ -77,11 +87,3 @@ If you need to restore your original DNS settings, you can:
 2. Manually configure your DNS settings through Windows Network Settings
 3. Use the Windows command: `netsh interface ip set dns "Your Adapter Name" dhcp`
 4. Restart your computer to ensure all changes take effect
-
-## Customization
-
-To add additional DNS servers to test, edit the `dns_servers` variable in the batch file and add IP addresses separated by spaces.
-
-## License
-
-This project is free to use and distribute.
