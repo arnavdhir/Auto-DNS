@@ -29,13 +29,13 @@ The script tests the following DNS providers:
 
 ## How to Use
 
-1. Download the `dns_optimizer.bat` file
-2. Right-click on the file and select "Run as administrator"
-3. The script will automatically detect your active network adapter
-4. It will test DNS resolution speed for all configured DNS servers across multiple domains
-5. After identifying the fastest DNS server, it will ask for confirmation before updating your settings
-6. If confirmed, it will update your DNS settings, flush the DNS cache, and verify the change
-7. A connectivity test will be performed to ensure everything is working properly
+1. Download the `dns_optimizer_auto.bat` file
+3. Right-click on the file and select "Run as administrator"
+4. The script will automatically detect your active network adapter
+5. It will test DNS resolution speed for all configured DNS servers across multiple domains
+6. After identifying the fastest DNS server, it will ask for confirmation before updating your settings
+7. If confirmed, it will update your DNS settings, flush the DNS cache, and verify the change
+8. A connectivity test will be performed to ensure everything is working properly
 
 ## What the Script Does
 
